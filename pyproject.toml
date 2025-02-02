@@ -1,0 +1,22 @@
+# ==== Configuração do Ambiente de Desenvolvimento ====
+#
+# Este arquivo configura o ambiente de desenvolvimento e ajuda IDEs como VS Code
+# a encontrar corretamente os módulos do projeto.
+#
+# Funções principais:
+# 1. Resolver problemas de importação no VS Code/Pylance
+# 2. Configurar análise estática de código
+# 3. Garantir que o ambiente de desenvolvimento funcione corretamente
+
+[tool.pyright]
+# Define quais arquivos o Pyright/Pylance deve analisar
+include = ["libs/agno/agno/**"]
+# Adiciona caminhos extras para resolução de imports
+extraPaths = ["libs/agno"]
+# Configura o ambiente virtual
+venv = "venv"
+venvPath = "."
+
+[tool.pylance]
+# Ajuda o VS Code a encontrar os módulos do projeto
+python.analysis.extraPaths = ["libs/agno"] 

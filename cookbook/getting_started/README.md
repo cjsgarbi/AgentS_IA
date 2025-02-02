@@ -4,6 +4,14 @@ This guide walks through the basics of building Agents with Agno.
 
 The examples build on each other, introducing new concepts and capabilities progressively. Each example contains detailed comments, example prompts, and required dependencies.
 
+# Bibliotecas necessárias:
+# - google-generativeai: Para configurar e interagir com o modelo de linguagem Gemini.
+# - lancedb: Banco de dados vetorial para armazenar e pesquisar informações na base de conhecimento.
+# - tantivy: Motor de busca para indexar e buscar informações textuais.
+# - pypdf: Para manipular e extrair informações de arquivos PDF.
+# - duckduckgo-search: Para realizar buscas na web quando necessário.
+# - agno: Biblioteca principal que integra todas as funcionalidades para criar o agente de IA.
+
 ## Setup
 
 Create a virtual environment:

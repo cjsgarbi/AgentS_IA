@@ -868,3 +868,4 @@ class OpenAIChat(Model):
         """
 
         return self._build_tool_calls(tool_calls_data)
+    

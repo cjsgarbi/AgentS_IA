@@ -1,53 +1,115 @@
-"""🗽 Basic Agent Example - Creating a Quirky News Reporter
+"""🎙️ Basic Agent Example - Seu Repórter Virtual Carioca!
 
-This example shows how to create a basic AI agent with a distinct personality.
-We'll create a fun news reporter that combines NYC attitude with creative storytelling.
-This shows how personality and style instructions can shape an agent's responses.
+Este exemplo mostra como criar um agente repórter com personalidade única,
+combinando o estilo carioca com jornalismo criativo.
 
-Example prompts to try:
-- "What's the latest scoop from Central Park?"
-- "Tell me about a breaking story from Wall Street"
-- "What's happening at the Yankees game right now?"
-- "Give me the buzz about a new Broadway show"
+Exemplos de perguntas para fazer:
+- "Me conte as últimas notícias do Rio de Janeiro"
+- "O que está acontecendo em São Paulo hoje?"
+- "Quais são as novidades no mundo do futebol?"
+- "Me dê as notícias do tempo para hoje"
 
-Run `pip install openai agno` to install dependencies.
+Execute `pip install agno google-generativeai` para instalar as dependências.
 """
 
+# 01_basic_agent.py
+import os
 from textwrap import dedent
-
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.gemini import GeminiChat
+import google.generativeai as genai
+from rich.pretty import pprint
 
-# Create our News Reporter with a fun personality
+# Verificar API Key
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError(
+        "⚠️ Por favor, configure a variável de ambiente GOOGLE_API_KEY")
+
+# Configurar o Gemini
+genai.configure(api_key=api_key)
+
+# Criar o agente repórter
 agent = Agent(
-    model=OpenAIChat(id="gpt-4o"),
+    model=GeminiChat(model_id="gemini-pro"),
+    description=dedent("""\
+        Você é um repórter carioca super carismático e cheio de energia! 🎙️
+        Pense em si mesmo como uma mistura de jornalista profissional com aquele 
+        tempero especial do Rio de Janeiro.\
+    """),
     instructions=dedent("""\
-        You are an enthusiastic news reporter with a flair for storytelling! 🗽
-        Think of yourself as a mix between a witty comedian and a sharp journalist.
+        Siga estes princípios ao reportar notícias:
 
-        Your style guide:
-        - Start with an attention-grabbing headline using emoji
-        - Share news with enthusiasm and NYC attitude
-        - Keep your responses concise but entertaining
-        - Throw in local references and NYC slang when appropriate
-        - End with a catchy sign-off like 'Back to you in the studio!' or 'Reporting live from the Big Apple!'
+        1. Estilo de Comunicação:
+           - Comece com uma manchete chamativa e emoji relevante
+           - Use linguagem informal carioca moderadamente
+           - Mantenha o profissionalismo mesmo sendo descontraído
+           - Seja empolgado mas preciso nas informações
+           - Use referências culturais brasileiras
 
-        Remember to verify all facts while keeping that NYC energy high!\
+        2. Estrutura das Respostas:
+           - Manchete com emoji relevante ao tema
+           - Introdução empolgante do assunto
+           - Desenvolvimento da notícia com detalhes
+           - Curiosidades ou dados interessantes
+           - Conclusão animada
+           - Despedida característica
+
+        3. Tópicos Especiais:
+           - Futebol: mencione times e jogadores cariocas
+           - Praias: destaque as do Rio de Janeiro
+           - Cultura: realce eventos e lugares do Rio
+           - Comida: mencione pratos e restaurantes cariocas
+
+        4. Lembre-se:
+           - Mantenha a credibilidade jornalística
+           - Seja envolvente e carismático
+           - Use emojis com moderação
+           - Traga informações relevantes e atualizadas
+           - Mantenha o espírito carioca sempre presente!
+
+        Termine sempre com "De volta ao estúdio!" ou "Reportando ao vivo do Rio!"\
     """),
     markdown=True,
+    show_tool_calls=True,
 )
 
-# Example usage
-agent.print_response(
-    "Tell me about a breaking news story happening in Times Square.", stream=True
-)
+# Apresentação inicial
+print(dedent("""
+🎙️ Agente Repórter - Seu Jornalista Virtual! 🎙️
+
+Fala, galera! Aqui é seu repórter virtual direto do Rio de Janeiro!
+Tô aqui pra trazer as notícias mais quentes com aquele tempero carioca!
+
+Como interagir comigo:
+- Me pergunte sobre qualquer assunto
+- Digite 'sair' para encerrar
+
+Vamo que vamo! Me faz uma pergunta! 📰
+""").strip() + "\n")
+
+# Loop interativo
+try:
+    while True:
+        user_input = input(
+            "\nSua pergunta (ou 'sair' para terminar): ").strip()
+
+        if not user_input or user_input.lower() in ['sair', 'exit', 'quit']:
+            break
+
+        agent.print_response(user_input)
+
+except KeyboardInterrupt:
+    pass
+finally:
+    print("\nEncerrando a transmissão... Foi um prazer noticiar pra você! 🎤")
 
 # More example prompts to try:
 """
 Try these fun scenarios:
-1. "What's the latest food trend taking over Brooklyn?"
-2. "Tell me about a peculiar incident on the subway today"
-3. "What's the scoop on the newest rooftop garden in Manhattan?"
-4. "Report on an unusual traffic jam caused by escaped zoo animals"
-5. "Cover a flash mob wedding proposal at Grand Central"
+1. "Quais são as praias mais movimentadas hoje?"
+2. "Como está o trânsito na Zona Sul?"
+3. "Qual o clima para o fim de semana?"
+4. "Quais os eventos culturais acontecendo?"
+5. "Me fale sobre o Carnaval 2024"
 """

@@ -1,61 +1,105 @@
-"""🗽 Web Searching News Reporter - Your AI News Buddy that searches the web
+"""🔍 Web Research Agent - Your AI Research Assistant!
 
-This example shows how to create an AI news reporter agent that can search the web
-for real-time news and present them with a distinctive NYC personality. The agent combines
-web searching capabilities with engaging storytelling to deliver news in an entertaining way.
+This example shows how to create an AI agent that can search the web for information.
+We'll create a research assistant that combines web search with natural conversation.
+This demonstrates how to use tools to extend an agent's capabilities.
 
 Example prompts to try:
-- "What's the latest headline from Wall Street?"
-- "Tell me about any breaking news in Central Park"
-- "What's happening at Yankees Stadium today?"
-- "Give me updates on the newest Broadway shows"
-- "What's the buzz about the latest NYC restaurant opening?"
+- "Quais são as últimas notícias sobre IA no Brasil?"
+- "Me fale sobre as tendências de tecnologia em 2024"
+- "O que está acontecendo no mundo dos esportes hoje?"
+- "Quais são as previsões econômicas para este ano?"
 
-Run `pip install openai duckduckgo-search agno` to install dependencies.
+Run `pip install agno google-generativeai duckduckgo-search` to install dependencies.
 """
 
+import os
 from textwrap import dedent
-
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.gemini import GeminiChat
 from agno.tools.duckduckgo import DuckDuckGoTools
+import sys
+from agno.utils.cleanup import with_graceful_exit
+import google.generativeai as genai
 
-# Create a News Reporter Agent with a fun personality
-agent = Agent(
-    model=OpenAIChat(id="gpt-4o"),
-    instructions=dedent("""\
-        You are an enthusiastic news reporter with a flair for storytelling! 🗽
-        Think of yourself as a mix between a witty comedian and a sharp journalist.
 
-        Follow these guidelines for every report:
-        1. Start with an attention-grabbing headline using relevant emoji
-        2. Use the search tool to find current, accurate information
-        3. Present news with authentic NYC enthusiasm and local flavor
-        4. Structure your reports in clear sections:
-        - Catchy headline
-        - Brief summary of the news
-        - Key details and quotes
-        - Local impact or context
-        5. Keep responses concise but informative (2-3 paragraphs max)
-        6. Include NYC-style commentary and local references
-        7. End with a signature sign-off phrase
+@with_graceful_exit
+def main():
+    # Verificar API Key
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        print("⚠️ Por favor, configure a variável de ambiente GOOGLE_API_KEY")
+        sys.exit(1)
 
-        Sign-off examples:
-        - 'Back to you in the studio, folks!'
-        - 'Reporting live from the city that never sleeps!'
-        - 'This is [Your Name], live from the heart of Manhattan!'
+    # Configurar o Gemini
+    genai.configure(api_key=api_key)
 
-        Remember: Always verify facts through web searches and maintain that authentic NYC energy!\
-    """),
-    tools=[DuckDuckGoTools()],
-    show_tool_calls=True,
-    markdown=True,
-)
+    # Apresentação inicial limpa
+    print(dedent("""
+    🔍 Agente Pesquisador - Seu Assistente de Pesquisa Virtual! 🔍
 
-# Example usage
-agent.print_response(
-    "Tell me about a breaking news story happening in Times Square.", stream=True
-)
+    Olá! Eu sou seu assistente de pesquisa, especializado em buscar e analisar 
+    informações da web de forma rápida e precisa. Posso pesquisar qualquer 
+    assunto e trazer as informações mais relevantes e atualizadas!
+
+    Como me usar:
+    - Me faça perguntas sobre qualquer assunto
+    - Peça por informações atualizadas sobre temas específicos
+    - Digite 'sair' para encerrar nossa conversa
+
+    Vamos começar? Me faça uma pergunta! 📚
+    """).strip() + "\n\n")
+
+    try:
+        # Criar o agente pesquisador com o modelo Gemini
+        chat_model = GeminiChat(model_id="gemini-pro")
+
+        agent = Agent(
+            model=chat_model,
+            tools=[DuckDuckGoTools()],
+            instructions=dedent("""\
+                Você é um pesquisador entusiasmado com talento para explicar! 🔍
+                Pense em si mesmo como uma mistura de jornalista investigativo e professor.
+
+                Seu guia de estilo:
+                - Comece com um título chamativo usando emoji
+                - Faça buscas precisas para encontrar informações atualizadas
+                - Organize as informações de forma clara e concisa
+                - Use linguagem acessível e exemplos práticos
+                - Termine com uma conclusão relevante e uma despedida amigável
+
+                Lembre-se:
+                - Sempre verifique as fontes
+                - Priorize informações recentes e confiáveis
+                - Mantenha um tom profissional mas amigável
+                - Use exemplos do contexto brasileiro quando possível\
+            """),
+            markdown=True,
+            show_tool_calls=True,
+            add_references=True
+        )
+
+        # Loop interativo
+        while True:
+            user_input = input(
+                "\nSua pergunta (ou 'sair' para terminar): ").strip()
+
+            if not user_input or user_input.lower() in ['sair', 'exit', 'quit']:
+                break
+
+            agent.print_response(user_input)
+
+    except KeyboardInterrupt:
+        pass
+    except Exception as e:
+        print(f"\nOcorreu um erro: {str(e)}")
+    finally:
+        print("\nEncerrando o pesquisador... Foi um prazer ajudar você! 🎓")
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
 
 # More example prompts to try:
 """

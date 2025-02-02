@@ -1,319 +1,344 @@
 <div align="center" id="top">
-  <a href="https://docs.agno.com">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset=".assets/logo-dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset=".assets/logo-light.svg">
-      <img src=".assets/logo-light.svg" alt="Agno">
-    </picture>
-  </a>
+<a href="https://docs.agno.com">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset=".assets/logo-dark.svg">
+<source media="(prefers-color-scheme: light)" srcset=".assets/logo-light.svg">
+<img src=".assets/logo-light.svg" alt="Agno">
+</picture>
+</a>
 </div>
+
 <div align="center">
-  <a href="https://docs.agno.com">📚 Documentation</a> &nbsp;|&nbsp;
-  <a href="https://docs.agno.com/examples/introduction">💡 Examples</a> &nbsp;|&nbsp;
-  <a href="https://github.com/agno-agi/agno/stargazers">🌟 Star Us</a>
+<a href="https://docs.agno.com">📚 Documentação</a> &nbsp;|&nbsp;
+<a href="https://docs.agno.com/examples/introduction">💡 Exemplos</a> &nbsp;|&nbsp;
+<a href="https://github.com/agno-agi/agno/stargazers">🌟 Star Us</a>
 </div>
 
-## Overview
+# Índice
 
-[Agno](https://docs.agno.com) is a lightweight framework for building multi-modal Agents.
+- [Sobre o Agno](#sobre-o-agno)
+- [Instalação](#instalação)
+- [Configuração](#configuração)
+- [Exemplos de Uso](#exemplos-de-uso)
+- [Recursos Avançados](#recursos-avançados)
+- [Documentação e Suporte](#documentação-e-suporte)
 
-## Simple, Fast, and Agnostic
+## Sobre o Agno
 
-Agno is designed with three core principles:
+O [Agno](https://docs.agno.com) é uma estrutura leve para construir agentes multimodais de IA, projetado com três princípios básicos:
 
-- **Simplicity**: No graphs, chains, or convoluted patterns — just pure python.
-- **Uncompromising Performance**: Blazing fast agents with a minimal memory footprint.
-- **Truly Agnostic**: Any model, any provider, any modality. Future-proof agents.
+- **Simplicidade**: Sem complexidades - apenas Python puro
+- **Desempenho**: Agentes extremamente rápidos com mínimo uso de memória
+- **Agnóstico**: Compatível com qualquer modelo, provedor ou modalidade
 
-## Key features
+### Principais Recursos
 
-Here's why you should build Agents with Agno:
+- 🚀 **Ultra Rápido**: 6000x mais rápido que alternativas similares
+- 🔄 **Multi Modal**: Suporte para texto, imagem, áudio e vídeo
+- 🤝 **Multi Agent**: Trabalho em equipe entre agentes especializados
+- 💾 **Gerenciamento de Memória**: Armazenamento eficiente de sessões
+- 📊 **Monitoramento**: Acompanhamento em tempo real via [agno.com](https://app.agno.com)
 
-- **Lightning Fast**: Agent creation is 6000x faster than LangGraph (see [performance](#performance)).
-- **Model Agnostic**: Use any model, any provider, no lock-in.
-- **Multi Modal**: Native support for text, image, audio and video.
-- **Multi Agent**: Delegate tasks across a team of specialized agents.
-- **Memory Management**: Store user sessions and agent state in a database.
-- **Knowledge Stores**: Use vector databases for Agentic RAG or dynamic few-shot.
-- **Structured Outputs**: Make Agents respond with structured data.
-- **Monitoring**: Track agent sessions and performance in real-time on [agno.com](https://app.agno.com).
+## Instalação
 
+### 1. Requisitos Básicos
 
-## Installation
+- Python 3.8 ou superior
+- pip (gerenciador de pacotes Python)
+- Ambiente virtual (recomendado)
 
-```shell
+### 2. Configuração do Ambiente
+
+```bash
+# Criar ambiente virtual
+python -m venv venv
+
+# Ativar ambiente (Windows)
+venv\Scripts\activate
+
+# Ativar ambiente (Linux/Mac)
+source venv/bin/activate
+```
+
+### 3. Instalação do Agno
+
+```bash
+# Instalação básica
 pip install -U agno
+
+# Para desenvolvimento
+pip install -e .
 ```
 
-## What are Agents?
+### 4. Dependências Opcionais
 
-Agents are autonomous programs that use language models to achieve tasks. They solve problems by running tools, accessing knowledge and memory to improve responses.
+Escolha as dependências conforme sua necessidade:
 
-Instead of a rigid binary definition, let's think of Agents in terms of agency and autonomy.
-
-- **Level 0**: Agents with no tools (basic inference tasks).
-- **Level 1**: Agents with tools for autonomous task execution.
-- **Level 2**: Agents with knowledge, combining memory and reasoning.
-- **Level 3**: Teams of agents collaborating on complex workflows.
-
-## Example - Basic Agent
-
-```python
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat
-
-agent = Agent(
-    model=OpenAIChat(id="gpt-4o"),
-    description="You are an enthusiastic news reporter with a flair for storytelling!",
-    markdown=True
-)
-agent.print_response("Tell me about a breaking news story from New York.", stream=True)
-```
-
-To run the agent, install dependencies and export your `OPENAI_API_KEY`.
-
-```shell
-pip install agno openai
-
-export OPENAI_API_KEY=sk-xxxx
-
-python basic_agent.py
-```
-
-[View this example in the cookbook](./cookbook/getting_started/01_basic_agent.py)
-
-## Example - Agent with tools
-
-This basic agent will obviously make up a story, lets give it a tool to search the web.
-
-```python
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat
-from agno.tools.duckduckgo import DuckDuckGoTools
-
-agent = Agent(
-    model=OpenAIChat(id="gpt-4o"),
-    description="You are an enthusiastic news reporter with a flair for storytelling!",
-    tools=[DuckDuckGoTools()],
-    show_tool_calls=True,
-    markdown=True
-)
-agent.print_response("Tell me about a breaking news story from New York.", stream=True)
-```
-
-Install dependencies and run the Agent:
-
-```shell
+```bash
+# Para busca web
 pip install duckduckgo-search
 
-python agent_with_tools.py
+# Para processamento de PDF e banco vetorial
+pip install lancedb tantivy pypdf
+
+# Para Google Gemini
+pip install google-generativeai
+
+# Para dados financeiros
+pip install yfinance
 ```
 
-Now you should see a much more relevant result.
+## Configuração
 
-[View this example in the cookbook](./cookbook/getting_started/02_agent_with_tools.py)
+### 1. Variáveis de Ambiente
 
-## Example - Agent with knowledge
+Primeiro, copie o arquivo de exemplo:
 
-Agents can store knowledge in a vector database and use it for RAG or dynamic few-shot learning.
+```bash
+cp .env.example .env
+```
 
-**Agno agents use Agentic RAG** by default, which means they will search their knowledge base for the specific information they need to achieve their task.
+### 2. Chaves API dos Provedores
+
+Configure as chaves API dos provedores que você pretende usar:
+
+#### Provedores Principais
+
+```env
+# OpenAI
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Google (Gemini)
+GOOGLE_API_KEY=your-google-api-key-here
+VERTEX_PROJECT=your-vertex-project-id    # Opcional - para VertexAI
+VERTEX_LOCATION=your-vertex-location     # Opcional - para VertexAI
+
+# Azure OpenAI
+AZURE_OPENAI_API_KEY=your-azure-openai-key
+AZURE_OPENAI_ENDPOINT=your-azure-endpoint
+AZURE_OPENAI_API_VERSION=2024-02-15
+AZURE_DEPLOYMENT=your-deployment-name
+```
+
+#### Provedores Adicionais
+
+```env
+# AWS (Bedrock)
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_REGION=your-aws-region
+
+# Anthropic
+ANTHROPIC_API_KEY=your-anthropic-key
+
+# Cohere
+COHERE_API_KEY=your-cohere-key
+
+# HuggingFace
+HUGGINGFACE_API_KEY=your-huggingface-key
+
+# Mistral
+MISTRAL_API_KEY=your-mistral-key
+
+# Together AI
+TOGETHER_API_KEY=your-together-key
+
+# Nvidia
+NVIDIA_API_KEY=your-nvidia-key
+NVIDIA_API_URL=https://api.nvidia.com/v1/
+
+# Ollama (Local)
+OLLAMA_HOST=http://localhost:11434
+
+# OpenRouter
+OPENROUTER_API_KEY=your-openrouter-key
+
+# Outros Provedores
+SAMBANOVA_API_KEY=your-sambanova-key
+XAI_API_KEY=your-xai-key              # Para Grok
+FIREWORKS_API_KEY=your-fireworks-key
+INTERNLM_API_KEY=your-internlm-key
+DEEPSEEK_API_KEY=your-deepseek-key
+GROQ_API_KEY=your-groq-key
+```
+
+### 3. Configurações do Framework
+
+#### Configurações Gerais
+
+```env
+# Telemetria (opcional)
+AGNO_TELEMETRY=true    # Define como false para desabilitar
+
+# Cache
+AGNO_CACHE_DIR=.cache  # Diretório para cache
+
+# Logging
+AGNO_LOG_LEVEL=INFO    # Opções: DEBUG, INFO, WARNING, ERROR
+```
+
+#### Banco de Dados Vetorial
+
+```env
+# Configurações do banco vetorial
+VECTOR_DB_URI=tmp/lancedb        # Caminho do banco de dados
+VECTOR_DB_TABLE=default          # Nome da tabela padrão
+```
+
+#### Configurações de Memória
+
+```env
+# Backend de memória
+MEMORY_BACKEND=local    # Opções: local, redis, postgres
+MEMORY_TTL=3600        # Tempo de vida em segundos
+
+# Configurações Redis (se usar MEMORY_BACKEND=redis)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
+REDIS_PASSWORD=your-password     # Se necessário
+
+# Configurações Postgres (se usar MEMORY_BACKEND=postgres)
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=agno
+POSTGRES_USER=your-user
+POSTGRES_PASSWORD=your-password
+```
+
+#### Limites de Taxa
+
+```env
+# Rate Limiting
+RATE_LIMIT_ENABLED=true     # Ativar/desativar limite de taxa
+RATE_LIMIT_REQUESTS=100     # Número máximo de requisições
+RATE_LIMIT_WINDOW=60        # Janela de tempo em segundos
+```
+
+### 4. Onde Obter as Chaves API
+
+- OpenAI: <https://platform.openai.com/api-keys>
+- Google (Gemini): <https://makersuite.google.com/app/apikey>
+- Azure: <https://portal.azure.com>
+- AWS: <https://aws.amazon.com/console/>
+- Anthropic: <https://console.anthropic.com>
+- Cohere: <https://dashboard.cohere.com/api-keys>
+- HuggingFace: <https://huggingface.co/settings/tokens>
+- Mistral: <https://console.mistral.ai/api-keys/>
+- Together AI: <https://api.together.xyz/settings/api-keys>
+- OpenRouter: <https://openrouter.ai/keys>
+
+### 5. Verificação da Configuração
+
+Para verificar se suas variáveis de ambiente estão configuradas corretamente:
+
+```python
+from agno.config import Config
+
+config = Config()
+print(config.get_provider_key("openai"))  # Deve mostrar sua chave OpenAI
+```
+
+> **Nota**: Mantenha suas chaves API seguras e nunca as compartilhe ou cometa no controle de versão.
+
+## Exemplos de Uso
+
+### Exemplo Básico
 
 ```python
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
-from agno.embedder.openai import OpenAIEmbedder
+
+agent = Agent(
+    model=OpenAIChat(id="gpt-4"),
+    description="Assistente amigável",
+    markdown=True
+)
+agent.print_response("Olá, como posso ajudar?", stream=True)
+```
+
+### Exemplo com Gemini
+
+```python
+from agno.agent import Agent
+from agno.models.gemini import GeminiChat
+
+agent = Agent(
+    model=GeminiChat(
+        api_key="SUA_CHAVE_API_GEMINI",
+        model="gemini-pro",
+        temperature=0.7
+    ),
+    description="Assistente Gemini",
+    markdown=True
+)
+```
+
+### Exemplo com Ferramentas Web
+
+```python
+from agno.agent import Agent
 from agno.tools.duckduckgo import DuckDuckGoTools
+
+agent = Agent(
+    model=OpenAIChat(id="gpt-4"),
+    description="Assistente com acesso à web",
+    tools=[DuckDuckGoTools()],
+    show_tool_calls=True
+)
+```
+
+## Recursos Avançados
+
+### Banco de Dados Vetorial
+
+```python
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
 from agno.vectordb.lancedb import LanceDb, SearchType
 
 agent = Agent(
-    model=OpenAIChat(id="gpt-4o"),
-    description="You are a Thai cuisine expert!",
-    instructions=[
-        "Search your knowledge base for Thai recipes.",
-        "If the question is better suited for the web, search the web to fill in gaps.",
-        "Prefer the information in your knowledge base over the web results."
-    ],
+    # ... configuração básica ...
     knowledge=PDFUrlKnowledgeBase(
-        urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
+        urls=["seu_arquivo.pdf"],
         vector_db=LanceDb(
             uri="tmp/lancedb",
-            table_name="recipes",
-            search_type=SearchType.hybrid,
-            embedder=OpenAIEmbedder(id="text-embedding-3-small"),
-        ),
-    ),
-    tools=[DuckDuckGoTools()],
-    show_tool_calls=True,
-    markdown=True
+            table_name="conhecimento"
+        )
+    )
 )
-
-# Comment out after the knowledge base is loaded
-if agent.knowledge is not None:
-    agent.knowledge.load()
-
-agent.print_response("How do I make chicken and galangal in coconut milk soup", stream=True)
-agent.print_response("What is the history of Thai curry?", stream=True)
 ```
 
-Install dependencies and run the Agent:
-
-```shell
-pip install lancedb tantivy pypdf duckduckgo-search
-
-python agent_with_knowledge.py
-```
-
-[View this example in the cookbook](./cookbook/getting_started/03_agent_with_knowledge.py)
-
-## Example - Multi Agent Teams
-
-Agents work best when they have a singular purpose, a narrow scope and a small number of tools. When the number of tools grows beyond what the language model can handle or the tools belong to different categories, use a team of agents to spread the load.
+### Equipe de Agentes
 
 ```python
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat
-from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.tools.yfinance import YFinanceTools
-
 web_agent = Agent(
-    name="Web Agent",
-    role="Search the web for information",
-    model=OpenAIChat(id="gpt-4o"),
-    tools=[DuckDuckGoTools()],
-    instructions="Always include sources",
-    show_tool_calls=True,
-    markdown=True,
+    nome="Agente Web",
+    função="Pesquisar na web",
+    tools=[DuckDuckGoTools()]
 )
 
 finance_agent = Agent(
-    name="Finance Agent",
-    role="Get financial data",
-    model=OpenAIChat(id="gpt-4o"),
-    tools=[YFinanceTools(stock_price=True, analyst_recommendations=True, company_info=True)],
-    instructions="Use tables to display data",
-    show_tool_calls=True,
-    markdown=True,
+    nome="Agente Financeiro",
+    função="Análise financeira",
+    tools=[YFinanceTools()]
 )
 
-agent_team = Agent(
-    team=[web_agent, finance_agent],
-    model=OpenAIChat(id="gpt-4o"),
-    instructions=["Always include sources", "Use tables to display data"],
-    show_tool_calls=True,
-    markdown=True,
-)
-
-agent_team.print_response("What's the market outlook and financial performance of AI semiconductor companies?", stream=True)
+team = Agent(team=[web_agent, finance_agent])
 ```
 
-Install dependencies and run the Agent team:
+## Documentação e Suporte
 
-```shell
-pip install duckduckgo-search yfinance
+- 📚 [Documentação Completa](https://docs.agno.com)
+- 💡 [Exemplos Detalhados](https://docs.agno.com/examples/introduction)
+- 💬 [Comunidade Discord](https://discord.gg/4MtYHHrgA8)
+- 🤝 [Fórum da Comunidade](https://community.agno.com/)
 
-python agent_team.py
-```
+## Contribuindo
 
-[View this example in the cookbook](./cookbook/getting_started/05_agent_team.py)
+Contribuições são bem-vindas! Consulte nosso [guia de contribuição](CONTRIBUTING.md).
 
-## Performance
+---
 
-Agno is designed for high performance agentic systems:
-
-- Agent instantiation: <5μs on average (5000x faster than LangGraph).
-- Memory footprint: <0.01Mib on average (50x less memory than LangGraph).
-
-> Tested on an Apple M4 Mackbook Pro.
-
-While an Agent's performance is bottlenecked by inference, we must do everything possible to minimize execution time, reduce memory usage, and parallelize tool calls. These numbers are may seem minimal, but they add up even at medium scale.
-
-### Instantiation time
-
-Let's measure the time it takes for an Agent with 1 tool to start up. We'll run the evaluation 1000 times to get a baseline measurement.
-
-You should run the evaluation yourself on your own machine, please, do not take these results at face value.
-
-```shell
-# Setup virtual environment
-./scripts/perf_setup.sh
-source .venvs/perfenv/bin/activate
-# OR Install dependencies manually
-# pip install openai agno langgraph langchain_openai
-
-# Agno
-python evals/performance/instantiation_with_tool.py
-
-# LangGraph
-python evals/performance/other/langgraph_instantiation.py
-```
-
-The following evaluation is run on an Apple M4 Mackbook Pro, but we'll soon be moving this to a Github actions runner for consistency.
-
-LangGraph is on the right, **we start it first to give it a head start**.
-
-Agno is on the left, notice how it finishes before LangGraph gets 1/2 way through the runtime measurement, and hasn't even started the memory measurement. That's how fast Agno is.
-
-https://github.com/user-attachments/assets/ba466d45-75dd-45ac-917b-0a56c5742e23
-
-Dividing the average time of a Langgraph Agent by the average time of an Agno Agent:
-
-```
-0.020526s / 0.000002s ~ 10,263
-```
-
-In this particular run, **Agno Agent instantiation is roughly 10,000 times faster than Langgraph Agent instantiation**. Sure, the runtime will be dominated by inference, but these numbers add up as the number of Agents grows.
-
-The numbers continue to favor Agno as the number of tools grow, and we all memory and knowledge stores.
-
-### Memory usage
-
-To measure memory usage, we use the `tracemalloc` library. We first calculate a baseline memory usage by running an empty function, then run the Agent 1000x times and calculate the difference. This gives a (reasonably) isolated measurement of the memory usage of the Agent.
-
-We recommend running the evaluation yourself on your own machine, and digging into the code to see how it works. If we've made a mistake, please let us know.
-
-Dividing the average memory usage of a Langgraph Agent by the average memory usage of an Agno Agent:
-
-```
-0.137273/0.002528 ~ 54.3
-```
-
-**Langgraph Agents use ~50x more memory than Agno Agents**. In our opinion, memory usage is a much more important metric than instantiation time. As we start running thousands of Agents in production, these numbers directly start affecting the cost of running the Agents.
-
-### Conclusion
-
-Agno agents are designed for high-performance and while we do share some benchmarks against other frameworks, we should be mindful that accuracy and reliability are more important than speed.
-
-We'll be publishing accuracy and reliability benchmarks running on Github actions in the coming weeks. Given that each framework is different and we won't be able to tune their performance like we do with Agno, for future benchmarks we'll only be comparing against ourselves.
-
-## Cursor Setup
-
-When building Agno agents, using the Agno docs as a documentation source in Cursor is a great way to speed up your development.
-
-1. In Cursor, go to the settings or preferences section.
-2. Find the section to manage documentation sources.
-3. Add `https://docs.agno.com` to the list of documentation URLs.
-4. Save the changes.
-
-Now, Cursor will have access to the Agno documentation.
-
-## Documentation, Community & More examples
-
-- Docs: <a href="https://docs.agno.com" target="_blank" rel="noopener noreferrer">docs.agno.com</a>
-- Getting Started Examples: <a href="https://github.com/agno-agi/agno/tree/main/cookbook/getting_started" target="_blank" rel="noopener noreferrer">Getting Started Cookbook</a>
-- All Examples: <a href="https://github.com/agno-agi/agno/tree/main/cookbook" target="_blank" rel="noopener noreferrer">Cookbook</a>
-- Community forum: <a href="https://community.agno.com/" target="_blank" rel="noopener noreferrer">community.agno.com</a>
-- Chat: <a href="https://discord.gg/4MtYHHrgA8" target="_blank" rel="noopener noreferrer">discord</a>
-
-## Contributions
-
-We welcome contributions, read our [contributing guide](https://github.com/agno-agi/agno/blob/main/CONTRIBUTING.md) to get started.
-
-## Telemetry
-
-Agno logs which model an agent used so we can prioritize updates to the most popular providers. You can disable this by setting `AGNO_TELEMETRY=false` in your environment.
-
-<p align="left">
-  <a href="#top">⬆️ Back to Top</a>
+<p align="center">
+<a href="#top">⬆️ Voltar ao topo</a>
 </p>
